@@ -1,6 +1,6 @@
-page-home {
+page-pass-reset {
   .background {
-    //background-image: url('<yoururlhere>');
+    //background-image: url('../assets/bgimage.jpg');
   }
   .scroll-content {
     align-content: center;
@@ -28,7 +28,7 @@ page-home {
     background: rgba(255, 255, 255, 0.5);
     border: medium none;
 
-    .text-input {
+    .text-input{
       color: #fff;
     }
 
@@ -62,5 +62,6 @@ page-home {
   .input-cover {
     position: static;
   }
+
 
 }
