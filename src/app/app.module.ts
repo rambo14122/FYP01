@@ -14,6 +14,8 @@ import { File } from '@ionic-native/file';
 import { FileChooser } from '@ionic-native/file-chooser';
 import { FilePath } from '@ionic-native/file-path';
 import { ImgHandlerProvider } from '../providers/img-handler/img-handler';
+import { IonicStorageModule } from '@ionic/storage';
+import { RequestsProvider } from '../providers/requests/requests';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,8 @@ import { ImgHandlerProvider } from '../providers/img-handler/img-handler';
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp,{tabsPlacement: 'top',scrollAssist: false, autoFocusAssist: false}),
-    AngularFireModule.initializeApp(config)
+    AngularFireModule.initializeApp(config),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -40,7 +43,8 @@ import { ImgHandlerProvider } from '../providers/img-handler/img-handler';
     File,
     FileChooser,
     FilePath,
-    ImgHandlerProvider
+    ImgHandlerProvider,
+    RequestsProvider
   ]
 })
 export class AppModule {}

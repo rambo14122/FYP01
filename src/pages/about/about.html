@@ -7,12 +7,25 @@
 <ion-header>
 
   <ion-navbar color="hcolor">
-    <ion-title>about</ion-title>
+    <ion-title>About</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+  <ion-list ng-style="{'line-height': '250px'}">
+    <ion-item>
+      <ion-avatar item-start>
+        <img src="{{avatar}}">
+      </ion-avatar>
+      <h2>{{displayName}}</h2>
+      <p>{{email}}</p>
+      <button ion-button clear item-end>Edit</button>
+    </ion-item>
+    <ion-item text-center no-lines>
+      <button ion-button default color="danger" block>Logout</button>
+    </ion-item>
+  </ion-list>
 
 </ion-content>

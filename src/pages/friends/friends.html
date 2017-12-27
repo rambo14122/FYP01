@@ -1,0 +1,36 @@
+<ion-header>
+
+  <ion-navbar color="hcolor">
+    <ion-title>Friends</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="addbuddy()">
+        <ion-icon name="person-add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-searchbar [(ngModel)]="searchstring" (input)="searchuser($event)" placeholder="Search"></ion-searchbar>
+  <ion-list>
+  <!--<ion-list>-->
+    <ion-list-header>
+      Friends
+    </ion-list-header>
+    <ion-item *ngFor="let item of myFriends" (click)="buddychat(item)">
+      <ion-avatar item-left>
+        <img src={{item.photoURL}}>
+      </ion-avatar>
+      <h3>{{item.displayName}}</h3>
+    </ion-item>
+  </ion-list>
+  <ion-item text-center no-lines>
+    <button ion-button default block icon-end (click)="addbuddy()">
+      Add Friend Now!
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-item>
+</ion-content>
+

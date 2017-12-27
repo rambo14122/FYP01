@@ -1,6 +1,9 @@
 import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams, LoadingController, ToastController} from 'ionic-angular';
 import {UserProvider} from "../../providers/user/user";
+import {Storage} from "@ionic/storage";
+import {FirebaseAuthProvider} from '../../providers/firebase-auth/firebase-auth';
+import {userCreds} from '../../models/interfaces/userCreds';
 
 /**
  * Generated class for the SignupPage page.
@@ -21,12 +24,12 @@ export class SignupPage {
       password: '',
       displayName: ''
     };
+  creds = {} as userCreds;
 
-  constructor(public toastCtrl: ToastController, public navCtrl: NavController, public navParams: NavParams, public userProvider: UserProvider, public loadingCtrl: LoadingController) {
+  constructor(public firebaseAuthProvider: FirebaseAuthProvider, public storage: Storage, public toastCtrl: ToastController, public navCtrl: NavController, public navParams: NavParams, public userProvider: UserProvider, public loadingCtrl: LoadingController) {
   }
 
   signup() {
-    /*the following codes are working:*/
     var toast = this.toastCtrl.create(
       {
         message: 'Error',
@@ -45,15 +48,28 @@ export class SignupPage {
     this.userProvider.addNewUser(this.newuser).then((res: any) => {
       loader.dismiss();
       if (res.success) {
-        this.navCtrl.push('ProfileImgPage');
+        this.creds.email = this.newuser.email;
+        this.creds.password = this.newuser.password;
+        this.firebaseAuthProvider.login(this.creds).then((res: any) => {
+            if (res === true) {
+              this.navCtrl.setRoot('ProfileImgPage');
+              this.storage.set('email', this.creds.email);
+              this.storage.set('password', this.creds.password)
+            }
+          }
+        ).catch((error) => {
+            toast.setMessage(error.message);
+            toast.present();
+          }
+        )
       }
-      else {
-        console.log('Error: ' + res);
-      }
+    }).catch((error) => {
+      loader.dismiss();
+      toast.setMessage(error.message);
+      toast.present();
     });
 
     /*the above codes are working */
-
 
 
   }

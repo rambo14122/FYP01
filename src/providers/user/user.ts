@@ -28,8 +28,8 @@ export class UserProvider {
             {
               uid: this.angularFireAuth.auth.currentUser.uid,
               displayName: newuser.displayName,
-              photoURL: ''
-            }).then(() => {
+              photoURL: 'https://firebasestorage.googleapis.com/v0/b/myapp-4eadd.appspot.com/o/chatterplace.png?alt=media&token=e51fa887-bfc6-48ff-87c6-e2c61976534e'
+        }).then(() => {
             resolve({success: true});
           }).catch((err) => {
             reject(err);
@@ -77,4 +77,58 @@ export class UserProvider {
     })
     return promise;
   }
+
+  getuserdetails() {
+    var promise = new Promise((resolve, reject) => {
+      this.firedata.child(firebase.auth().currentUser.uid).once('value', (snapshot) => {
+        resolve(snapshot.val());
+      }).catch((err) => {
+        reject(err);
+      })
+    })
+    return promise;
+  }
+
+  updatedisplayname(newname) {
+    var promise = new Promise((resolve, reject) => {
+      this.angularFireAuth.auth.currentUser.updateProfile({
+        displayName: newname,
+        photoURL: this.angularFireAuth.auth.currentUser.photoURL
+      }).then(() => {
+        this.firedata.child(firebase.auth().currentUser.uid).update({
+          displayName: newname,
+          photoURL: this.angularFireAuth.auth.currentUser.photoURL,
+          uid: this.angularFireAuth.auth.currentUser.uid
+        }).then(() => {
+          resolve({ success: true });
+        }).catch((err) => {
+          reject(err);
+        })
+      }).catch((err) => {
+        reject(err);
+      })
+    })
+    return promise;
+  }
+
+  getallusers() {
+    var promise = new Promise((resolve, reject) => {
+      this.firedata.orderByChild('uid').once('value', (snapshot) => {
+        let userdata = snapshot.val();
+        let temparr = [];
+        for (var key in userdata) {
+          if(userdata[key].uid!=this.angularFireAuth.auth.currentUser.uid)
+          {
+            temparr.push(userdata[key]);
+          }
+
+        }
+        resolve(temparr);
+      }).catch((err) => {
+        reject(err);
+      })
+    })
+    return promise;
+  }
+
 }
